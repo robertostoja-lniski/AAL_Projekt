@@ -20,4 +20,6 @@ int main() {
     Solver solver;
     solver.read_data(filename);
     solver.print_data();
+    solver.generate_possible_matches();
+    solver.print_possible_matches();
 }
