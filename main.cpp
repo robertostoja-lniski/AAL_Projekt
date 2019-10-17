@@ -22,4 +22,6 @@ int main() {
     solver.print_data();
     solver.generate_possible_matches();
     solver.print_possible_matches();
+    solver.solve();
+    solver.print_possible_matches();
 }

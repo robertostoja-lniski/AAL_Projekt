@@ -11,6 +11,7 @@
 #include <cmath>
 #include <vector>
 #include <set>
+#include <map>
 #include <fstream>
 #include <string>
 #include <sstream>
@@ -29,6 +30,7 @@ private:
         std::cout << "\n";
     }
 
+    std::set< std::string > projects;
     std::set< std::string > sectors;
     std::vector< Worker > workers;
     int** possible_matches;
@@ -63,6 +65,7 @@ public:
 
             while(iss >> project) {
                 worker.add_project(project);
+                projects.insert(project);
             }
 
             workers.push_back(worker);
@@ -72,7 +75,7 @@ public:
 
     void generate_possible_matches() {
 
-        int row_num = sectors.size();
+        int row_num = projects.size();
         int column_num = workers.size();
 
         possible_matches = new int*[row_num];
@@ -84,16 +87,69 @@ public:
         int x = 0;
         int y = 0;
 
-        for( auto sector : sectors ) {
+        for( auto project : projects ) {
 
             y = 0;
             for( auto worker : workers ) {
 
-                possible_matches[x][y] =  ( worker.getSector() == sector );
+                possible_matches[x][y] = worker.isInProject(project);
                 y++;
             }
             x++;
         }
+    }
+    void solve() {
+        
+        // maybe hide check inside my_map
+        // that iherits from std map ?
+        std::map< std::string, int > count_map;
+        int help_tab[projects.size()][workers.size()];
+
+        for(int x = 0; x < projects.size(); x++) {
+
+            for(int y = 0; y < workers.size(); y++) {
+                help_tab[x][y] = 0;
+            }
+        }
+
+        for( auto sector : sectors ) {
+            count_map[sector] = 0;
+        }
+
+        int limit = projects.size() / 2;
+
+        for(int x = 0; x < projects.size(); x++) {
+
+            for(int y = 0; y < workers.size(); y++) {
+
+                std::cout << x << " " << y << "\n";    
+                if( possible_matches[x][y] != 0 ) {
+
+                    std::string sector_name = workers[y].getSector();
+
+                    if(count_map[sector_name] < limit) {
+
+                        help_tab[x][y] = 1;
+                        count_map[sector_name]++;
+                        break;
+                    }
+
+                }
+            }
+        }
+
+       for (std::map<std::string,int>::iterator it=count_map.begin(); it!=count_map.end(); ++it) {
+            std::cout << it->first << " => " << it->second << '\n';
+       }
+
+        for(int x = 0; x < projects.size(); x++) {
+
+            for(int y = 0; y < workers.size(); y++) {
+
+                possible_matches[x][y] = help_tab[x][y];
+            }
+        }
+        
     }    
     void print_data() {
 
@@ -103,9 +159,9 @@ public:
 
         std::cout << "\n";
 
-        for( auto sector : sectors ) {
+        for( auto project : projects ) {
 
-            std::cout << sector << "\n";
+            std::cout << project << "\n";
         }
         
         std::cout << "\n";
@@ -113,13 +169,12 @@ public:
 
     void print_possible_matches() {
 
-        int row_num = sectors.size();
+        int row_num = projects.size();
         int column_num = workers.size();
 
-        std::cout << "##";
+        std::cout << "pw";
         for(int i = 0 ; i < column_num; i++) {
-
-            std::cout <<"#" << i;
+            std::cout <<"#" << i + 1;
         }
         std::cout << "\n";
 
@@ -127,7 +182,7 @@ public:
         for(int x = 0; x < row_num; x++) {
             
             //TODO fit to number of digits
-            std::cout << x << "# ";
+            std::cout << x + 1 << "# ";
             for(int y = 0; y < column_num; y++) {
 
                 std::cout << possible_matches[x][y] << " ";
@@ -137,5 +192,4 @@ public:
 
     }
 };
-
-#endif 
+#endif

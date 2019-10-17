@@ -35,6 +35,10 @@ class Worker{
             return name;
         }
 
+        int isInProject(std::string project) {
+            return std::find(projects.begin(), projects.end(), project) != projects.end();
+        }
+
         friend std::ostream& operator<<(std::ostream& os, const Worker& dt);
 };
 
