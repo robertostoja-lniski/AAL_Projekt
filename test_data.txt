@@ -1,0 +1,4 @@
+Jan HR P1 P2 
+Anna Księgowość P1 P3
+Wojtek Księgowość P2 P3
+Ola IT P3

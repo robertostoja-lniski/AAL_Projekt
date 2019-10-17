@@ -1,0 +1,23 @@
+#include <pthread.h> 
+#include <unistd.h>
+#include "Solver.hpp"
+
+#include <algorithm>
+#include <iostream>
+#include <chrono>
+#include <ctime>  
+#include <cmath>
+#include <vector>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <algorithm>
+
+
+int main() {
+
+    std::string filename = "test_data.txt";
+    Solver solver;
+    solver.read_data(filename);
+    solver.print_data();
+}
