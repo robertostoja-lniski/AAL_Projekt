@@ -34,6 +34,8 @@ private:
     std::set< std::string > sectors;
     std::vector< Worker > workers;
     int** possible_matches;
+    int** possible_matches_copy;
+    int* chosen_workers;
 
 public:
 
@@ -79,9 +81,16 @@ public:
         int column_num = workers.size();
 
         possible_matches = new int*[row_num];
+        possible_matches_copy = new int*[row_num];
+        chosen_workers = new int[row_num];
 
-        for(int i = 0; i < row_num; ++i) {
+        for(int i = 0; i < row_num; i++) {
+            chosen_workers[i] = -1;
+        }
+
+        for(int i = 0; i < row_num; i++) {
             possible_matches[i] = new int[column_num];
+            possible_matches_copy[i] = new int[column_num];
         }
 
         int x = 0;
@@ -92,18 +101,42 @@ public:
             y = 0;
             for( auto worker : workers ) {
 
+                std::cout << x << " " << y << "\n";
                 possible_matches[x][y] = worker.isInProject(project);
+                possible_matches_copy[x][y] = worker.isInProject(project);
                 y++;
             }
             x++;
         }
     }
     void solve() {
-        
-        // maybe hide check inside my_map
-        // that iherits from std map ?
+
+        // 1. jesli przypisano kazdemu projektowi, wyjdz
+
+        // 2. dla kazdego rzedu
+        //    jesli jest 1 w tablicy matching, sprawdz czy po dodaniu osiagnie limit
+        //    
+        /*
+            1. jesli przypisano reprezentanta kazdego projektowi, wyjdz
+
+            2. dla kazdego rzedu
+                2.1 dla kazdej komorki - jesli jest 1 w tablicy matching, sprawdz czy po dodaniu osiagnie sie limit
+                    2.1.1 jesli tak, iteruj dalej
+                    2.1.2 jesli nie dodaj
+                
+                2.2 jesli przejdzie sie za ostatnia komorke i nie znajdzie sie dopasowania, to usun szukajac 
+                    od poczatku, pracownika, ktory jest z wadliwego dzialu i przejdz do dopasowania innego zamiast niego
+        */
         std::map< std::string, int > count_map;
+        std::string problematic_sector;
+
+        bool swapped = false;
+        bool finished = false;
+
+        int problematic_x;
+        int problematic_y;
         int help_tab[projects.size()][workers.size()];
+        int count = 0;
 
         for(int x = 0; x < projects.size(); x++) {
 
@@ -118,24 +151,77 @@ public:
 
         int limit = projects.size() / 2;
 
-        for(int x = 0; x < projects.size(); x++) {
+        for(int x = 0; x < projects.size() && !finished; x++) {
 
-            for(int y = 0; y < workers.size(); y++) {
+            for(int y = 0; y < workers.size() && !finished ; y++) {
 
+                // sleep(2);    
+                std::cout << "analising " << x << " " << y << "\n"; 
+                if(count == projects.size()) {
+                    finished = true;
+                }
+
+                if( x == -1) {
+
+                    std::cout << "matching impossible\n";    
+                    return;
+                }
                 std::cout << x << " " << y << "\n";    
                 if( possible_matches[x][y] != 0 ) {
 
                     std::string sector_name = workers[y].getSector();
-
                     if(count_map[sector_name] < limit) {
 
                         help_tab[x][y] = 1;
                         count_map[sector_name]++;
+                        count++;
+                        std::cout << sector_name << " " << count_map[sector_name] << "\n";
+
                         break;
+                    } else {
+
+                        std::cout << "Problem occured " << sector_name << " " << x << " " << y << "\n";
+                        problematic_sector = sector_name;
+                        problematic_x = x;
+                        problematic_y = y;
                     }
 
                 }
+
+                // if not found
+                if(y == workers.size() - 1) {
+
+                    swapped = false;
+                    std::cout << "not found\n";
+                    for(int k = 0; k < projects.size() && !swapped ; k++) {
+
+                        for(int l = 0; l < workers.size() && !swapped; l++) {
+
+                            if(help_tab[k][l] == 1) {
+
+                                std::cout << "analising " << k << " " << l << "\n";    
+                                std::string sector_chosen = workers[l].getSector();
+
+                                if(sector_chosen == problematic_sector) {
+
+                                    help_tab[k][l] = 0;
+                                    help_tab[problematic_x][problematic_y] = 1;
+
+                                    x = k;  
+                                    y = -1;
+
+                                    swapped = true;
+                                }
+                            }
+                        }
+                    }
+
+                    std::cout << "exited swap loop\n";
+                }
+
+                std::cout << x << " " << y << "\n";
             }
+            
         }
 
        for (std::map<std::string,int>::iterator it=count_map.begin(); it!=count_map.end(); ++it) {
@@ -150,7 +236,16 @@ public:
             }
         }
         
-    }    
+    }
+
+    void show_results() {
+
+        for(int i = 0; i < projects.size(); i++) {
+
+            std::cout << "projekt nr " << i + 1 << " => " << chosen_workers[i] << "\n";
+        }
+    }
+ 
     void print_data() {
 
         for( auto worker : workers ) {
@@ -174,7 +269,7 @@ public:
 
         std::cout << "pw";
         for(int i = 0 ; i < column_num; i++) {
-            std::cout <<"#" << i + 1;
+            std::cout <<"#" << i;
         }
         std::cout << "\n";
 
@@ -182,7 +277,7 @@ public:
         for(int x = 0; x < row_num; x++) {
             
             //TODO fit to number of digits
-            std::cout << x + 1 << "# ";
+            std::cout << x  << "# ";
             for(int y = 0; y < column_num; y++) {
 
                 std::cout << possible_matches[x][y] << " ";
