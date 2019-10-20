@@ -29,13 +29,23 @@ private:
         }
         std::cout << "\n";
     }
+    
+    void make_unique(std::vector< std::string > &vec) {
 
-    std::set< std::string > projects;
-    std::set< std::string > sectors;
+        std::sort(vec.begin(), vec.end());
+        auto last = std::unique(vec.begin(), vec.end());
+        vec.erase(last, vec.end());
+    }
+
+    size_t projects_num = 0;
+    size_t workers_num = 0;
+    size_t limit = 0;
+
+    std::vector< std::string > projects;
+    std::vector< std::string > sectors;
     std::vector< Worker > workers;
+
     int** possible_matches;
-    int** possible_matches_copy;
-    int* chosen_workers;
 
 public:
 
@@ -63,34 +73,32 @@ public:
             }
 
             Worker worker(name, sector);
-            sectors.insert(sector);
+            sectors.push_back(sector);
 
             while(iss >> project) {
                 worker.add_project(project);
-                projects.insert(project);
+                projects.push_back(project);
             }
 
             workers.push_back(worker);
         }
+
+        make_unique(sectors);
+        make_unique(projects);
+
+        workers_num = workers.size();
+        projects_num = projects.size();
+        limit = projects_num / 2;
+
         return 0;
     }
 
     void generate_possible_matches() {
 
-        int row_num = projects.size();
-        int column_num = workers.size();
+        possible_matches = new int*[projects_num];
 
-        possible_matches = new int*[row_num];
-        possible_matches_copy = new int*[row_num];
-        chosen_workers = new int[row_num];
-
-        for(int i = 0; i < row_num; i++) {
-            chosen_workers[i] = -1;
-        }
-
-        for(int i = 0; i < row_num; i++) {
-            possible_matches[i] = new int[column_num];
-            possible_matches_copy[i] = new int[column_num];
+        for(int i = 0; i < projects_num; i++) {
+            possible_matches[i] = new int[workers_num];
         }
 
         int x = 0;
@@ -103,7 +111,6 @@ public:
 
                 std::cout << x << " " << y << "\n";
                 possible_matches[x][y] = worker.isInProject(project);
-                possible_matches_copy[x][y] = worker.isInProject(project);
                 y++;
             }
             x++;
@@ -135,12 +142,12 @@ public:
 
         int problematic_x;
         int problematic_y;
-        int help_tab[projects.size()][workers.size()];
+        int help_tab[projects_num][workers_num];
         int count = 0;
 
-        for(int x = 0; x < projects.size(); x++) {
+        for(int x = 0; x < projects_num; x++) {
 
-            for(int y = 0; y < workers.size(); y++) {
+            for(int y = 0; y < workers_num; y++) {
                 help_tab[x][y] = 0;
             }
         }
@@ -149,15 +156,13 @@ public:
             count_map[sector] = 0;
         }
 
-        int limit = projects.size() / 2;
+        for(int x = 0; x < projects_num && !finished; x++) {
 
-        for(int x = 0; x < projects.size() && !finished; x++) {
-
-            for(int y = 0; y < workers.size() && !finished ; y++) {
+            for(int y = 0; y < workers_num && !finished ; y++) {
 
                 // sleep(2);    
                 std::cout << "analising " << x << " " << y << "\n"; 
-                if(count == projects.size()) {
+                if(count == projects_num) {
                     finished = true;
                 }
 
@@ -189,13 +194,13 @@ public:
                 }
 
                 // if not found
-                if(y == workers.size() - 1) {
+                if(y == workers_num - 1) {
 
                     swapped = false;
                     std::cout << "not found\n";
-                    for(int k = 0; k < projects.size() && !swapped ; k++) {
+                    for(int k = 0; k < projects_num && !swapped ; k++) {
 
-                        for(int l = 0; l < workers.size() && !swapped; l++) {
+                        for(int l = 0; l < workers_num && !swapped; l++) {
 
                             if(help_tab[k][l] == 1) {
 
@@ -238,14 +243,6 @@ public:
         
     }
 
-    void show_results() {
-
-        for(int i = 0; i < projects.size(); i++) {
-
-            std::cout << "projekt nr " << i + 1 << " => " << chosen_workers[i] << "\n";
-        }
-    }
- 
     void print_data() {
 
         for( auto worker : workers ) {
@@ -264,21 +261,18 @@ public:
 
     void print_possible_matches() {
 
-        int row_num = projects.size();
-        int column_num = workers.size();
-
         std::cout << "pw";
-        for(int i = 0 ; i < column_num; i++) {
+        for(int i = 0 ; i < workers_num; i++) {
             std::cout <<"#" << i;
         }
         std::cout << "\n";
 
         // not using for each, because x is printed
-        for(int x = 0; x < row_num; x++) {
+        for(int x = 0; x < projects_num; x++) {
             
             //TODO fit to number of digits
             std::cout << x  << "# ";
-            for(int y = 0; y < column_num; y++) {
+            for(int y = 0; y < workers_num; y++) {
 
                 std::cout << possible_matches[x][y] << " ";
             }
