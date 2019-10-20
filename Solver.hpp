@@ -39,6 +39,7 @@ private:
                         result_tab[x][y] = 0;
                         workers[y].unassign();
                         result_tab[x_to_swap][y_to_swap] = 1;
+                        workers[y_to_swap].assign();
 
                         return std::make_pair( x, -1 );
                     }
@@ -144,7 +145,7 @@ public:
             x++;
         }
     }
-    void solve() {
+    int solve() {
 
         // 1. jesli przypisano kazdemu projektowi, wyjdz
 
@@ -201,7 +202,7 @@ public:
                 if( x == -1) {
 
                     std::cout << "matching impossible\n";    
-                    return;
+                    return 1;
                 }
 
                 std::cout << x << " " << y << "\n";    
@@ -219,7 +220,17 @@ public:
                         break;
                     } else {
 
+                        // if causes problem at least two times
+                        // it means that every worker of this section was swapped
+                        if(workers[y].isProblematic()) {
+                            
+                            std::cout << "matching impossible\n";    
+                            return 2;
+                        }
+
                         std::cout << "Problem occured " << sector_name << " " << x << " " << y << "\n";
+                        workers[y].becomeProblematic();
+
                         problematic_sector = sector_name;
                         problematic_x = x;
                         problematic_y = y;
@@ -240,10 +251,14 @@ public:
             
         }
 
-       for (std::map<std::string,int>::iterator it=count_map.begin(); it!=count_map.end(); ++it) {
+        std::cout << "przypisano: \n";
+
+        for (std::map<std::string,int>::iterator it=count_map.begin(); it!=count_map.end(); ++it) {
             std::cout << it->first << " => " << it->second << '\n';
-       }
-        
+        }
+
+        return 0;
+
     }
 
     void print_data() {
@@ -289,6 +304,10 @@ public:
         // printing by names, not by project ids
         for(int y = 0; y < workers_num; y++) {
             
+            if(!workers[y].isAssigned()) {
+                continue;
+            }
+
             std::cout << workers[y].getName() << " ";
 
             for(int x = 0; x < projects_num; x++) {
