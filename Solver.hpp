@@ -37,6 +37,7 @@ private:
                     if(sector_chosen == sector) {
 
                         result_tab[x][y] = 0;
+                        workers[y].unassign();
                         result_tab[x_to_swap][y_to_swap] = 1;
 
                         return std::make_pair( x, -1 );
@@ -210,6 +211,7 @@ public:
                     if(count_map[sector_name] < limit) {
 
                         result_tab[x][y] = 1;
+                        workers[y].assign();
                         count_map[sector_name]++;
                         count++;
                         std::cout << sector_name << " " << count_map[sector_name] << "\n";

@@ -13,6 +13,7 @@ class Worker{
         std::vector< std::string > projects;
         std::string name;
         std::string sector;
+        bool assigned = false;
 
     public:
 
@@ -31,6 +32,14 @@ class Worker{
             return sector;
         }
 
+        void assign() {
+            assigned = true;
+        }
+
+        void unassign() {
+            assigned = false;
+        }
+        
         std::string getName() {
             return name;
         }
