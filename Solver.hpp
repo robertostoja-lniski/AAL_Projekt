@@ -22,6 +22,32 @@ class Solver{
 
 private:
 
+    std::pair< int, int > swap_assignmets(std::string sector, int x_to_swap, int y_to_swap) {
+
+        std::cout << "not found\n";
+        for(int x = 0; x < projects_num; x++) {
+
+            for(int y = 0; y < workers_num; y++) {
+
+                if(result_tab[x][y] == 1) {
+
+                    std::cout << "analising " << x << " " << y << "\n";    
+                    std::string sector_chosen = workers[y].getSector();
+
+                    if(sector_chosen == sector) {
+
+                        result_tab[x][y] = 0;
+                        result_tab[x_to_swap][y_to_swap] = 1;
+
+                        return std::make_pair( x, -1 );
+                    }
+                }
+            }
+        }
+
+        std::cout << "exited swap loop\n";
+    }
+    
     void print_single_1D_vector(std::vector< std::string> vec_to_print) {
 
         for(std::string element : vec_to_print) {
@@ -46,6 +72,7 @@ private:
     std::vector< Worker > workers;
 
     int** possible_matches;
+    int** result_tab;
 
 public:
 
@@ -142,13 +169,18 @@ public:
 
         int problematic_x;
         int problematic_y;
-        int help_tab[projects_num][workers_num];
         int count = 0;
+
+        result_tab = new int*[projects_num];
+
+        for(int i = 0; i < projects_num; i++) {
+            result_tab[i] = new int[workers_num];
+        }
 
         for(int x = 0; x < projects_num; x++) {
 
             for(int y = 0; y < workers_num; y++) {
-                help_tab[x][y] = 0;
+                result_tab[x][y] = 0;
             }
         }
 
@@ -159,8 +191,7 @@ public:
         for(int x = 0; x < projects_num && !finished; x++) {
 
             for(int y = 0; y < workers_num && !finished ; y++) {
-
-                // sleep(2);    
+    
                 std::cout << "analising " << x << " " << y << "\n"; 
                 if(count == projects_num) {
                     finished = true;
@@ -171,13 +202,14 @@ public:
                     std::cout << "matching impossible\n";    
                     return;
                 }
+
                 std::cout << x << " " << y << "\n";    
                 if( possible_matches[x][y] != 0 ) {
 
                     std::string sector_name = workers[y].getSector();
                     if(count_map[sector_name] < limit) {
 
-                        help_tab[x][y] = 1;
+                        result_tab[x][y] = 1;
                         count_map[sector_name]++;
                         count++;
                         std::cout << sector_name << " " << count_map[sector_name] << "\n";
@@ -196,32 +228,9 @@ public:
                 // if not found
                 if(y == workers_num - 1) {
 
-                    swapped = false;
-                    std::cout << "not found\n";
-                    for(int k = 0; k < projects_num && !swapped ; k++) {
-
-                        for(int l = 0; l < workers_num && !swapped; l++) {
-
-                            if(help_tab[k][l] == 1) {
-
-                                std::cout << "analising " << k << " " << l << "\n";    
-                                std::string sector_chosen = workers[l].getSector();
-
-                                if(sector_chosen == problematic_sector) {
-
-                                    help_tab[k][l] = 0;
-                                    help_tab[problematic_x][problematic_y] = 1;
-
-                                    x = k;  
-                                    y = -1;
-
-                                    swapped = true;
-                                }
-                            }
-                        }
-                    }
-
-                    std::cout << "exited swap loop\n";
+                    auto point = swap_assignmets(problematic_sector, problematic_x, problematic_y);
+                    x = point.first;
+                    y = point.second;
                 }
 
                 std::cout << x << " " << y << "\n";
@@ -237,7 +246,7 @@ public:
 
             for(int y = 0; y < workers.size(); y++) {
 
-                possible_matches[x][y] = help_tab[x][y];
+                possible_matches[x][y] = result_tab[x][y];
             }
         }
         
