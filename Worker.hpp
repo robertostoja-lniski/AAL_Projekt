@@ -14,6 +14,7 @@ class Worker{
         std::string name;
         std::string sector;
         bool assigned = false;
+        bool problematic = false;
 
     public:
 
@@ -40,6 +41,18 @@ class Worker{
             assigned = false;
         }
         
+        void becomeProblematic() {
+            problematic = true; 
+        }
+
+        bool isProblematic() {
+            return problematic;
+        }
+
+        bool isAssigned() {
+            return assigned;
+        }
+
         std::string getName() {
             return name;
         }

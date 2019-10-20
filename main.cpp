@@ -16,13 +16,18 @@
 
 int main() {
 
-    std::string filename = "test_data_2.txt";
+    std::string filename = "test_loop.txt";
     Solver solver;
     solver.read_data(filename);
     solver.print_data();
     solver.generate_possible_matches();
     solver.print_possible_matches();
-    solver.solve();
-    solver.print_possible_matches();
-    solver.print_results();
+    int result = solver.solve();
+
+    if(result == EXIT_SUCCESS) {
+
+        solver.print_possible_matches();
+        solver.print_results();
+    } 
+    
 }
