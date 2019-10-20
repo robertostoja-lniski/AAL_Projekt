@@ -23,6 +23,6 @@ int main() {
     solver.generate_possible_matches();
     solver.print_possible_matches();
     solver.solve();
-    // solver.preSolve();
     solver.print_possible_matches();
+    solver.print_results();
 }

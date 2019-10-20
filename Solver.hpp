@@ -241,14 +241,6 @@ public:
        for (std::map<std::string,int>::iterator it=count_map.begin(); it!=count_map.end(); ++it) {
             std::cout << it->first << " => " << it->second << '\n';
        }
-
-        for(int x = 0; x < projects.size(); x++) {
-
-            for(int y = 0; y < workers.size(); y++) {
-
-                possible_matches[x][y] = result_tab[x][y];
-            }
-        }
         
     }
 
@@ -288,6 +280,23 @@ public:
             std::cout << "\n";
         }
 
+    }
+
+    void print_results() {
+
+        // printing by names, not by project ids
+        for(int y = 0; y < workers_num; y++) {
+            
+            std::cout << workers[y].getName() << " ";
+
+            for(int x = 0; x < projects_num; x++) {
+
+                if(result_tab[x][y]) {
+                    std::cout << projects[x] << " ";
+                }
+            }
+            std::cout << "\n";
+        }
     }
 };
 #endif
