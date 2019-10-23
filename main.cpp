@@ -22,10 +22,15 @@ int main() {
 
     data_storage.read_data(filename);
     data_storage.print_data();
-
+    
     Graph graph;
     graph.generate_graph(data_storage);
     graph.print();
-    std::cout << graph.fordFulkerson() << "\n";
-    graph.decryptResults(data_storage);
+
+    if(graph.fordFulkerson() < data_storage.getProjectsNum()) {
+        std::cout << "Cannot assign workers.\n";
+    } else {
+        graph.decryptResults(data_storage);
+    }
+
 }
