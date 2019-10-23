@@ -1,6 +1,7 @@
 #include <pthread.h> 
 #include <unistd.h>
-#include "Solver.hpp"
+#include "Graph.hpp"
+#include "DataStorage.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -16,18 +17,15 @@
 
 int main() {
 
-    std::string filename = "test_loop.txt";
-    Solver solver;
-    solver.read_data(filename);
-    solver.print_data();
-    solver.generate_possible_matches();
-    solver.print_possible_matches();
-    int result = solver.solve();
+    std::string filename = "test_data.txt";
+    DataStorage data_storage;
 
-    if(result == EXIT_SUCCESS) {
+    data_storage.read_data(filename);
+    data_storage.print_data();
 
-        solver.print_possible_matches();
-        solver.print_results();
-    } 
-    
+    Graph graph;
+    graph.generate_graph(data_storage);
+    graph.print();
+    std::cout << graph.fordFulkerson() << "\n";
+    graph.decryptResults(data_storage);
 }
