@@ -13,16 +13,25 @@ class Worker{
         std::vector< std::string > projects;
         std::string name;
         std::string sector;
+
         bool assigned = false;
         bool problematic = false;
 
+        int id;
+
     public:
 
-        Worker(std::string name, std::string sector) :
-            name(name), sector(sector) {}
+        Worker() {}
+
+        Worker(std::string name, std::string sector, unsigned int id) :
+            name(name), sector(sector), id(id) {}
 
         void add_project(std::string project) {
             projects.push_back(project);
+        }
+
+        std::vector< std::string > getProjects() {
+            return projects;
         }
 
         void sort_project_list() {
@@ -33,24 +42,12 @@ class Worker{
             return sector;
         }
 
+        int getId() {
+            return id;
+        }    
+        
         void assign() {
             assigned = true;
-        }
-
-        void unassign() {
-            assigned = false;
-        }
-        
-        void becomeProblematic() {
-            problematic = true; 
-        }
-
-        bool isProblematic() {
-            return problematic;
-        }
-
-        bool isAssigned() {
-            return assigned;
         }
 
         std::string getName() {
