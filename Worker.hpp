@@ -6,6 +6,10 @@
 #include <algorithm>
 #include <iostream>
 
+/*  
+    Simple class representing a worker
+    It contains his name, sector, list of projects 
+*/
 class Worker{
 
     private:
@@ -57,18 +61,6 @@ class Worker{
         int isInProject(std::string project) {
             return std::find(projects.begin(), projects.end(), project) != projects.end();
         }
-
-        friend std::ostream& operator<<(std::ostream& os, const Worker& dt);
 };
 
-std::ostream& operator<<(std::ostream& os, const Worker& worker)
-{
-    os << worker.name << " " << worker.sector << " ";
-
-    for(auto project : worker.projects) {
-        os << project << " ";
-    }
-    
-    return os;
-}
 #endif
