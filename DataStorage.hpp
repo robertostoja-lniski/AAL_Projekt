@@ -74,7 +74,7 @@ public:
     std::string getSectorAt(size_t index) {
 
         if(index > sectors_num) {
-            throw std::out_of_range("There is no such worker");
+            throw std::out_of_range("There is no such sector");
         }
         return sectors[index];
     }
@@ -144,30 +144,6 @@ public:
 
         return 0;
     }
-
-    void generate_possible_matches() {
-
-        possible_matches = new int*[projects_num];
-
-        for(int i = 0; i < projects_num; i++) {
-            possible_matches[i] = new int[workers_num];
-        }
-
-        int x = 0;
-        int y = 0;
-
-        for( auto project : projects ) {
-
-            y = 0;
-            for( auto worker : workers ) {
-
-                std::cout << x << " " << y << "\n";
-                possible_matches[x][y] = worker.isInProject(project);
-                y++;
-            }
-            x++;
-        }
-    }
    
     void print_data() {
 
@@ -183,27 +159,6 @@ public:
         }
         
         std::cout << "\n";
-    }
-
-    void print_possible_matches() {
-
-        std::cout << "pw";
-        for(int i = 0 ; i < workers_num; i++) {
-            std::cout <<"#" << i;
-        }
-        std::cout << "\n";
-
-        // not using for each, because x is printed
-        for(int x = 0; x < projects_num; x++) {
-            
-            //TODO fit to number of digits
-            std::cout << x  << "# ";
-            for(int y = 0; y < workers_num; y++) {
-
-                std::cout << possible_matches[x][y] << " ";
-            }
-            std::cout << "\n";
-        }
     }
 };
 

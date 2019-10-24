@@ -16,92 +16,22 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
-#include "Worker.hpp"
-#include "DataStorage.hpp"
 #include <iostream> 
 #include <limits.h> 
 #include <string.h> 
 #include <queue> 
 
-#define SIZE 12
-class Path{
+#include "DataStorage.hpp"
+#include "Worker.hpp"
+#include "GraphHelpClasses.hpp"
 
-private:
 
-    int project;
-    int worker;
-    int sector;
+/*  
 
-public:
-    Path(int project, int worker, int sector) :
-        project(project), worker(worker), sector(sector) {}
+    A class that represents a graph with methods dedicated
+    to solve graph algorithms
 
-    int getProject() {
-        return project;
-    }
-
-    int getWorker() {
-        return worker;
-    }
-
-    int getSector() {
-        return sector;
-    }
-
-};
-class VertexParent{
-
-private:
-
-    int parent_id = 0;
-    int index_in_collection = 0;
-
-public:
-
-    VertexParent() {}
-
-    int getParentId() {
-        return parent_id;
-    }
-
-    int getIndexInCollection() {
-        return index_in_collection;
-    }
-
-    void setParentId( int parent_id ) {
-        this->parent_id = parent_id;
-    }
-
-    void setIndexInCollection(int index_in_collection ) {
-        this->index_in_collection = index_in_collection;
-    }
-};
-
-class Connection{
-
-private:
-
-    int vertex_id;
-    //if graph_representation[Connection_A][Connection_B] exists
-    //edge_len Connection_B is equal to lenght of edge between A and B
-    int edge_len;
-
-public:
-    Connection(int vertex_id, int edge_len) : vertex_id(vertex_id), edge_len(edge_len) {}
-
-    int getVertexId() {
-        return vertex_id;
-    }
-    
-    int getEdgeLen(){
-        return edge_len;
-    }
-
-    int addToEdgeLen(int val) {
-        edge_len += val;
-    }
-};
-
+*/
 
 class Graph{
 
@@ -114,7 +44,6 @@ private:
     }
 
     std::vector< Connection >* graph_representation;
-    // unsigned int** graph_representation;
     size_t graph_size = 0;
     std::vector< Path > algorithm_results;
 
@@ -122,6 +51,12 @@ public:
     
     Graph() {}
 
+    /*
+        structure algorithm_results stores the information
+        about vertexes that create path starting in s and ending in t.
+
+        To generate results, it has to be decrypted.
+    */
     void decryptResults(DataStorage data_storage) {
         
         for( auto result : algorithm_results ) {
@@ -135,6 +70,24 @@ public:
             std::cout << worker_name << " " << project_name << "\n";
         }
     }
+
+    /*
+        Function generating graph:
+
+        From s egdes go to every of sectors. Value on these edges is m / 2.
+        It means that at first we try to take a worker from a sector
+        and we are sure that there will not be more workers from any sector than m / 2.
+
+        Then from every sector goes an edge to worker that belongs to this sector.
+
+        From workers there is edge to every project that he belongs to 
+        ( he can represent every projected that he is working in ).
+
+        From projects flow goes to t.
+
+        Edges from s to sectors have flow m / 2. Every other edge has 1.
+    */
+
     void generate_graph(DataStorage data_storage) {
         // 2 is added because graph has to have starting and ending vertexes
         graph_size = data_storage.getWorkersNum() +  data_storage.getSectorsNum() + data_storage.getProjectsNum() + 2;
@@ -190,14 +143,6 @@ public:
 
     void print() {
         
-        std::cout << "# ";
-        for(int i = 0; i < graph_size; i++) {
-            
-            std::cout << "#" << i;
-            if( i < 10 ) {
-                std::cout << " ";
-            }
-        }
         std::cout << "\n";
         for(int i = 0; i < graph_size; i++) {
 
@@ -256,6 +201,12 @@ bool bfs(std::vector< Connection >* graph, int s, int t, VertexParent parents[])
 
     return visited[t]; 
 } 
+/*  
+    simple algorithm that checks maximum flow in graph.
+    The aim is to have the flow of projects num.
+
+    It is modified to work on optimised data structures
+*/
 int fordFulkerson() 
 { 
     int u, v; 

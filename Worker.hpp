@@ -6,6 +6,10 @@
 #include <algorithm>
 #include <iostream>
 
+/*  
+    Simple class representing a worker
+    It contains his name, sector, list of projects 
+*/
 class Worker{
 
     private:
