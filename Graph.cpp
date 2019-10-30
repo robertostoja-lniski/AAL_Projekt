@@ -4,18 +4,13 @@ void Graph::makeOneDirectionalConnectionBetween(int a, int b, int val){
         Connection to_b(b, val);
         graphRepresentation[a].push_back(to_b); 
 }
-void Graph::decryptResults(DataStorage data_storage) {
-    
-    for( auto result : algorithmResults ) {
 
-        int workerId = result.getWorker() - data_storage.getSectorsNum() - 1;
-        int projectId = result.getProject() - data_storage.getSectorsNum() - data_storage.getWorkersNum() - 1;
+std::vector< Connection >* Graph::getRepresentation()  {
+        return graphRepresentation;
+}
 
-        auto worker_name = data_storage.getWorkerAt( workerId ).getName();
-        auto project_name = data_storage.getProjectAt( projectId );
-
-        std::cout << worker_name << " " << project_name << "\n";
-    }
+size_t Graph::getSize() {
+    return graphSize;
 }
 
 void Graph::generateGraph(DataStorage data_storage) {
@@ -89,6 +84,7 @@ void Graph::print() {
     }
 }
 
+<<<<<<< Updated upstream
 bool Graph::bfs(std::vector< Connection >* graph, int s, int t, VertexParent parents[]) 
 { 
 
@@ -200,3 +196,5 @@ int Graph::fordFulkerson()
     return max_flow; 
 }
   
+=======
+>>>>>>> Stashed changes

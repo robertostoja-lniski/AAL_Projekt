@@ -38,19 +38,10 @@ private:
 
     std::vector< Connection >* graphRepresentation;
     size_t graphSize = 0;
-    std::vector< Path > algorithmResults;
 
 public:
     
     Graph() {}
-
-    /*
-        structure algorithm_results stores the information
-        about vertexes that create path starting in s and ending in t.
-
-        To generate results, it has to be decrypted.
-    */
-    void decryptResults(DataStorage data_storage);
 
     /*
         Function generating graph:
@@ -72,18 +63,9 @@ public:
 
     void print();
 
-    /*
-        A simple bfs function using queue
-    */
-    bool bfs(std::vector< Connection >* graph, int s, int t, VertexParent parents[]);
+    std::vector< Connection >* getRepresentation();
 
-    /*  
-        simple algorithm that checks maximum flow in graph.
-        The aim is to have the flow of projects num.
-
-        It is modified to work on optimised data structures
-    */
-    int fordFulkerson();
+    size_t getSize();
 
 }; 
 #endif 

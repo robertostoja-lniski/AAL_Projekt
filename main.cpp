@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include "Graph.hpp"
 #include "DataStorage.hpp"
+#include "Solver.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -18,19 +19,22 @@
 int main() {
 
     std::string filename = "test_data.txt";
-    DataStorage data_storage;
+    DataStorage dataStorage;
 
-    data_storage.readData(filename);
-    data_storage.printData();
+    dataStorage.readData(filename);
+    dataStorage.printData();
     
     Graph graph;
-    graph.generateGraph(data_storage);
+    graph.generateGraph(dataStorage);
     graph.print();
 
-    if(graph.fordFulkerson() < data_storage.getProjectsNum()) {
+    Solver solver;
+    unsigned int maxFlow = solver.fordFulkerson(graph.getRepresentation(), graph.getSize());
+    unsigned int requiredFlow = dataStorage.getProjectsNum();
+
+    if(maxFlow < requiredFlow) {
         std::cout << "Cannot assign workers.\n";
     } else {
-        graph.decryptResults(data_storage);
+        solver.decryptResults(dataStorage);
     }
-
 }
