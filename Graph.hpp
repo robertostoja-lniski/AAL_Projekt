@@ -34,11 +34,11 @@ class Graph{
 private:
     
     // makes a connection a => b ( with value val )
-    void make_one_direction_connection_between(int a, int b, int val);
+    void makeOneDirectionalConnectionBetween(int a, int b, int val);
 
-    std::vector< Connection >* graph_representation;
-    size_t graph_size = 0;
-    std::vector< Path > algorithm_results;
+    std::vector< Connection >* graphRepresentation;
+    size_t graphSize = 0;
+    std::vector< Path > algorithmResults;
 
 public:
     
@@ -68,7 +68,7 @@ public:
 
         Edges from s to sectors have flow m / 2. Every other edge has 1.
     */
-    void generate_graph(DataStorage data_storage);
+    void generateGraph(DataStorage data_storage);
 
     void print();
 

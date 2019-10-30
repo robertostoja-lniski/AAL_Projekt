@@ -30,7 +30,7 @@ class Worker{
         Worker(std::string name, std::string sector, unsigned int id) :
             name(name), sector(sector), id(id) {}
 
-        void add_project(std::string project) {
+        void addProject(std::string project) {
             projects.push_back(project);
         }
 
@@ -38,7 +38,7 @@ class Worker{
             return projects;
         }
 
-        void sort_project_list() {
+        void sortProjectList() {
             std::sort(projects.begin(), projects.end());
         }
 
