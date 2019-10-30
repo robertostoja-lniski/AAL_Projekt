@@ -20,11 +20,11 @@ int main() {
     std::string filename = "test_data.txt";
     DataStorage data_storage;
 
-    data_storage.read_data(filename);
-    data_storage.print_data();
+    data_storage.readData(filename);
+    data_storage.printData();
     
     Graph graph;
-    graph.generate_graph(data_storage);
+    graph.generateGraph(data_storage);
     graph.print();
 
     if(graph.fordFulkerson() < data_storage.getProjectsNum()) {

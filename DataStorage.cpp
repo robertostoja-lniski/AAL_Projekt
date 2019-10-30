@@ -1,12 +1,12 @@
 #include "DataStorage.hpp"
-void DataStorage::make_unique(std::vector< std::string > &vec) {
+void DataStorage::makeUnique(std::vector< std::string > &vec) {
 
     std::sort(vec.begin(), vec.end());
     auto last = std::unique(vec.begin(), vec.end());
     vec.erase(last, vec.end());
 }
 
-int DataStorage::read_data(std::string filename){
+int DataStorage::readData(std::string filename){
 
     std::string name;
     std::string sector;
@@ -28,7 +28,7 @@ int DataStorage::read_data(std::string filename){
         sectors.push_back(sector);
 
         while(iss >> project) {
-            worker.add_project(project);
+            worker.addProject(project);
             projects.push_back(project);
         }
 
@@ -36,18 +36,18 @@ int DataStorage::read_data(std::string filename){
         count++;
     }
 
-    make_unique(sectors);
-    make_unique(projects);
+    makeUnique(sectors);
+    makeUnique(projects);
 
-    workers_num = workers.size();
-    projects_num = projects.size();
-    sectors_num = sectors.size();
-    limit = projects_num / 2;
+    workersNum = workers.size();
+    projectsNum = projects.size();
+    sectorsNum = sectors.size();
+    limit = projectsNum / 2;
 
     return 0;
 }
 
-void DataStorage::print_data() {
+void DataStorage::printData() {
 
     for( auto worker : workers ) {
         std::cout << worker.getName() << " ";
