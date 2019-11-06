@@ -25,7 +25,7 @@ void Graph::generateGraph(DataStorage dataStorage) {
 
     //from starting point, there will be connection to every project
     int sectorId = 0;
-    while(sectorId < dataStorage.getProjectsNum()) {
+    while(sectorId < dataStorage.getSectorsNum()) {
         makeOneDirectionalConnectionBetween( 0, sectorId + 1);
         sectorId++;
     }
