@@ -29,7 +29,7 @@ int main() {
     graph.print();
 
     Solver solver;
-    unsigned int maxFlow = solver.fordFulkerson(graph.getRepresentation(), graph.getSize());
+    unsigned int maxFlow = solver.fordFulkerson(graph.getRepresentation(), graph.getSize(), graph.getLimit());
     unsigned int requiredFlow = dataStorage.getProjectsNum();
 
     if(maxFlow < requiredFlow) {

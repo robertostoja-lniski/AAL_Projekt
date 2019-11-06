@@ -24,7 +24,6 @@
 #include "DataStorage.hpp"
 #include "GraphHelpClasses.hpp"
 
-
 /*  
     A class that represents a graph with methods dedicated
     to solve graph algorithms
@@ -33,11 +32,12 @@ class Graph{
 
 private:
     
-    // makes a connection a => b ( with value val )
-    void makeOneDirectionalConnectionBetween(int a, int b, int val);
+    // makes a connection a => b
+    void makeOneDirectionalConnectionBetween(int a, int b);
 
-    std::vector< Connection >* graphRepresentation;
+    std::vector< int >* graphRepresentation;
     size_t graphSize = 0;
+    size_t limit = 0;
 
 public:
     
@@ -63,9 +63,11 @@ public:
 
     void print();
 
-    std::vector< Connection >* getRepresentation();
+    std::vector< int >* getRepresentation();
 
     size_t getSize();
 
+    size_t getLimit();
+
 }; 
-#endif 
+#endif
