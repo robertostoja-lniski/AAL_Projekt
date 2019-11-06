@@ -61,7 +61,7 @@ bool Solver::bfs(std::vector< Connection >* graph, int s, int t, VertexParent pa
 
     It is modified to work on optimised data structures
 */
-int Solver::fordFulkerson(std::vector< Connection >* graphRepresentation, size_t graphSize) 
+int Solver::fordFulkerson(std::vector< int >* graphRepresentation, size_t graphSize, size_t limit) 
 { 
     int u, v; 
     std::vector< Connection >* residual_graph;  
@@ -71,10 +71,11 @@ int Solver::fordFulkerson(std::vector< Connection >* graphRepresentation, size_t
 
         for (v = 0; v < graphRepresentation[u].size(); v++) {
             
-            Connection residual_connection(graphRepresentation[u][v].getVertexId(), graphRepresentation[u][v].getEdgeLen());
+            int edgeLen = ( u == 0 ? limit : 1 );
+            Connection residual_connection(graphRepresentation[u][v], edgeLen);
             Connection residual_reverse_connection(u, 0);
             
-            int reverse_vertexId = graphRepresentation[u][v].getVertexId();
+            int reverse_vertexId = graphRepresentation[u][v];
 
             residual_graph[u].push_back(residual_connection);
             residual_graph[reverse_vertexId].push_back(residual_reverse_connection);

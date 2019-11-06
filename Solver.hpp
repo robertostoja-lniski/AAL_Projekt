@@ -41,7 +41,7 @@ class Solver{
 
             It is modified to work on optimised data structures
         */
-        int fordFulkerson(std::vector< Connection >* graphRepresentation, size_t graphSize);
+        int fordFulkerson(std::vector< int >* graphRepresentation, size_t graphSize, size_t limit);
 
         /*
             structure algorithm_results stores the information
