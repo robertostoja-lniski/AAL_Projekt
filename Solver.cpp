@@ -1,15 +1,15 @@
 #include "Solver.hpp"
-void Solver::decryptResults(DataStorage data_storage) {
+void Solver::decryptResults(DataStorage dataStorage) {
     
     for( auto result : algorithmResults ) {
 
-        int workerId = result.getWorker() - data_storage.getSectorsNum() - 1;
-        int projectId = result.getProject() - data_storage.getSectorsNum() - data_storage.getWorkersNum() - 1;
+        int workerId = result.getWorker() - dataStorage.getSectorsNum() - 1;
+        int projectId = result.getProject() - dataStorage.getSectorsNum() - dataStorage.getWorkersNum() - 1;
 
-        auto worker_name = data_storage.getWorkerAt( workerId ).getName();
-        auto project_name = data_storage.getProjectAt( projectId );
+        auto workerName = dataStorage.getWorkerAt( workerId ).getName();
+        auto project_name = dataStorage.getProjectAt( projectId );
 
-        std::cout << worker_name << " " << project_name << "\n";
+        std::cout << workerName << " " << project_name << "\n";
     }
 }
 
@@ -64,8 +64,8 @@ bool Solver::bfs(std::vector< Connection >* graph, int s, int t, VertexParent pa
 int Solver::fordFulkerson(std::vector< int >* graphRepresentation, size_t graphSize, size_t limit) 
 { 
     int u, v; 
-    std::vector< Connection >* residual_graph;  
-    residual_graph = new std::vector< Connection >[graphSize];
+    std::vector< Connection >* residualGraph;  
+    residualGraph = new std::vector< Connection >[graphSize];
 
     for (u = 0; u < graphSize; u++) {
 
@@ -77,18 +77,18 @@ int Solver::fordFulkerson(std::vector< int >* graphRepresentation, size_t graphS
             
             int reverse_vertexId = graphRepresentation[u][v];
 
-            residual_graph[u].push_back(residual_connection);
-            residual_graph[reverse_vertexId].push_back(residual_reverse_connection);
+            residualGraph[u].push_back(residual_connection);
+            residualGraph[reverse_vertexId].push_back(residual_reverse_connection);
             
         } 
     }
     VertexParent parents[graphSize];
   
-    int max_flow = 0;
+    int maxFlow = 0;
 
-    while (bfs(residual_graph, 0, graphSize - 1, parents, graphSize)) 
+    while (bfs(residualGraph, 0, graphSize - 1, parents, graphSize)) 
     { 
-        int path_flow = INT_MAX; 
+        int pathFLow = INT_MAX; 
 
         v = graphSize - 1;
         while(parents[v].getParentId() != -1) {
@@ -96,7 +96,7 @@ int Solver::fordFulkerson(std::vector< int >* graphRepresentation, size_t graphS
             u = parents[v].getParentId();
             int index = parents[v].getIndexInCollection();
            
-            path_flow = std::min(path_flow, residual_graph[u][index].getEdgeLen());
+            pathFLow = std::min(pathFLow, residualGraph[u][index].getEdgeLen());
             
             v = u;
         }
@@ -108,20 +108,20 @@ int Solver::fordFulkerson(std::vector< int >* graphRepresentation, size_t graphS
             int index = parents[v].getIndexInCollection();
 
             // for better performance index in parent collection is saved
-            residual_graph[u][index].addToEdgeLen( -path_flow );
+            residualGraph[u][index].addToEdgeLen( -pathFLow );
             
-            for(int i = 0; i < residual_graph[v].size(); i++) {
+            for(int i = 0; i < residualGraph[v].size(); i++) {
 
-                if(residual_graph[v][i].getVertexId() == u) {
-                    residual_graph[v][i].addToEdgeLen( path_flow );
+                if(residualGraph[v][i].getVertexId() == u) {
+                    residualGraph[v][i].addToEdgeLen( pathFLow );
                 }
             }
 
             v = u;
         }
 
-        max_flow += path_flow;
+        maxFlow += pathFLow;
     }
-    return max_flow; 
+    return maxFlow; 
 }
   
