@@ -33,9 +33,6 @@ private:
     std::vector< std::string > sectors;
     std::vector< Worker > workers;
 
-    int** possible_matches;
-    int** result_tab;
-
 public:
 
     DataStorage() {}

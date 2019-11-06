@@ -59,7 +59,7 @@ public:
 
         Edges from s to sectors have flow m / 2. Every other edge has 1.
     */
-    void generateGraph(DataStorage data_storage);
+    void generateGraph(DataStorage dataStorage);
 
     void print();
 

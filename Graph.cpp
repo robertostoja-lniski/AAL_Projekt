@@ -16,16 +16,16 @@ size_t Graph::getLimit() {
     return limit;
 }
 
-void Graph::generateGraph(DataStorage data_storage) {
+void Graph::generateGraph(DataStorage dataStorage) {
     // 2 is added because graph has to have starting and ending vertexes
-    graphSize = data_storage.getWorkersNum() +  data_storage.getSectorsNum() + data_storage.getProjectsNum() + 2;
+    graphSize = dataStorage.getWorkersNum() +  dataStorage.getSectorsNum() + dataStorage.getProjectsNum() + 2;
     // [begin][sectors][workers][projects][end]
     graphRepresentation = new std::vector< int >[graphSize];
-    this->limit = data_storage.getLimit();
+    this->limit = dataStorage.getLimit();
 
     //from starting point, there will be connection to every project
     int sectorId = 0;
-    while(sectorId < data_storage.getProjectsNum()) {
+    while(sectorId < dataStorage.getProjectsNum()) {
         makeOneDirectionalConnectionBetween( 0, sectorId + 1);
         sectorId++;
     }
@@ -33,27 +33,27 @@ void Graph::generateGraph(DataStorage data_storage) {
     //every worker will be connected to his sector
     //and to projects that he takes part in
     int workerId = 0;
-    while(workerId < data_storage.getWorkersNum()) {
+    while(workerId < dataStorage.getWorkersNum()) {
 
         //get worker with given id and found id of sector he is in    
-        auto worker = data_storage.getWorkerAt( workerId );
-        auto sector_name = worker.getSector();
-        int sectorId = data_storage.getSectorId( sector_name );
+        auto worker = dataStorage.getWorkerAt( workerId );
+        auto sectorName = worker.getSector();
+        int sectorId = dataStorage.getSectorId( sectorName );
 
         //[begin][sector][workerId]...
-        int worker_offset = workerId + 1 + data_storage.getSectorsNum();
-        makeOneDirectionalConnectionBetween(sectorId + 1, worker_offset);
+        int workerName = workerId + 1 + dataStorage.getSectorsNum();
+        makeOneDirectionalConnectionBetween(sectorId + 1, workerName);
 
         //now for a worker, there will be a connection 
         //with every of his projects
-        auto project_collection = worker.getProjects();
-        for( auto project : project_collection) {
+        auto projectCollection = worker.getProjects();
+        for( auto project : projectCollection) {
             
-            int projectId = data_storage.getProjectId( project );
+            int projectId = dataStorage.getProjectId( project );
             //[begin][sector][worker][projectId]...
-            int project_offset = projectId + 1 + data_storage.getSectorsNum() + data_storage.getWorkersNum();
+            int projectOffset = projectId + 1 + dataStorage.getSectorsNum() + dataStorage.getWorkersNum();
             
-            makeOneDirectionalConnectionBetween(worker_offset, project_offset);
+            makeOneDirectionalConnectionBetween(workerName, projectOffset);
 
         }
         workerId++;
@@ -61,9 +61,9 @@ void Graph::generateGraph(DataStorage data_storage) {
 
     int projectId = 0;
     //every project will be connected with end
-    while(projectId < data_storage.getProjectsNum()) {
-        int project_offset = projectId + 1 + data_storage.getSectorsNum() + data_storage.getWorkersNum();
-        makeOneDirectionalConnectionBetween( project_offset, graphSize - 1);
+    while(projectId < dataStorage.getProjectsNum()) {
+        int projectOffset = projectId + 1 + dataStorage.getSectorsNum() + dataStorage.getWorkersNum();
+        makeOneDirectionalConnectionBetween( projectOffset, graphSize - 1);
         projectId++;
     }
 

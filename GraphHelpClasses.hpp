@@ -36,7 +36,7 @@ private:
         For example:
 
         if parend_id[B] = A ( parent id was assigned when moving from A to B )
-        graph[A][index_in_collection].getValue() = B
+        graph[A][indexInCollection].getValue() = B
 
         Aim:
 
@@ -59,27 +59,27 @@ private:
         Step a) in unnecessary, since we know the exact position in neighbours list
         It gives us O(1) instead of O(n)
     */
-    int parent_id = 0;
-    int index_in_collection = 0;
+    int parentId = 0;
+    int indexInCollection = 0;
 
 public:
 
     VertexParent() {}
 
     int getParentId() {
-        return parent_id;
+        return parentId;
     }
 
     int getIndexInCollection() {
-        return index_in_collection;
+        return indexInCollection;
     }
 
-    void setParentId( int parent_id ) {
-        this->parent_id = parent_id;
+    void setParentId( int parentId ) {
+        this->parentId = parentId;
     }
 
-    void setIndexInCollection(int index_in_collection ) {
-        this->index_in_collection = index_in_collection;
+    void setIndexInCollection(int indexInCollection ) {
+        this->indexInCollection = indexInCollection;
     }
 };
 
@@ -95,25 +95,25 @@ private:
         Since edge value can be ( 1 : m / 2 ), class Connection
         was added to solve the issue of storing egde value.
         
-        graph_representation[Connection_A][Connection_B].edge_len
+        graph_representation[Connection_A][Connection_B].edgeLen
         is equal to length of edge A => B
     */
-    int vertex_id;
-    int edge_len;
+    int vertexLen;
+    int edgeLen;
 
 public:
-    Connection(int vertex_id, int edge_len) : vertex_id(vertex_id), edge_len(edge_len) {}
+    Connection(int vertexLen, int edgeLen) : vertexLen(vertexLen), edgeLen(edgeLen) {}
 
     int getVertexId() {
-        return vertex_id;
+        return vertexLen;
     }
     
     int getEdgeLen(){
-        return edge_len;
+        return edgeLen;
     }
 
     int addToEdgeLen(int val) {
-        edge_len += val;
+        edgeLen += val;
     }
 };
 #endif
