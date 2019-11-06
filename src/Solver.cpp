@@ -1,4 +1,4 @@
-#include "Solver.hpp"
+#include "../include/Solver.hpp"
 void Solver::decryptResults(DataStorage dataStorage) {
     
     for( auto result : algorithmResults ) {
