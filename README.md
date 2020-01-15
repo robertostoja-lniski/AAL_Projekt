@@ -1,7 +1,39 @@
 # AAL_Projekt
 
 Projekt na przedmiot AAL,
-autor: Robert Ostoja - Lniski PW.
+autor: Robert Ostoja - Lniski, Eiti PW.
+
+Specyfikacja:
+Rozwiązanie problemu przydziału pracowników do projektów na podstawie sieci przepływowej przy
+użyciu algorytmu BFS oraz reprezentacji grafu w postaci wektora wektorów.
+Każdy pracownik należy do danego jednego działu i bierze udział w dowolnej ilości projektów.
+Należy wybrać przedstawicieli do projektów, w taki sposób aby w wybranych zbiorze pracowników
+nie było ponad połowy pracowników z tego samego działu. Jeden pracownik może być przedstawicielem
+tylko jednego projektu.
+
+Projekt:
+Projekt składa się z katalogów
+bin - tutaj znajdują się pliki binarne dla 
+  a) programu
+  b) testów jednostkowych
+  
+scripts - tutaj znajdują się skrypty do
+  a) kompilacji
+  b) wykonania i sprawdzenia testów jednostkowych
+  c) wygenerowania danych testowych
+  d) zebrania iformacji o czasie wykonania programu dla danych testowych
+  
+include - pliki nagłówkowe
+
+source - pliki źródłowe
+
+testing - programy do testowania, testy jednostkowe oraz dane testowe
+
+Program jest rozwiązany przy użyciu algorytmu forda fulkersona obługującego grafy
+skierowane oraz nieskierowane. Przeszukiwanie grafu jest liniowe w oparciu o 
+algorytm BFS, złożoność problemu to 0(n^3). Dodatkowo w celu ułatwienia przetwarzania
+danych znajdują się klasy pomocnicze.
+
 
 Na branchu Master jest rozwiązanie problemu algorytmicznego, dodatki ( generatory testów, narzędzia do wizualizacji )
 znajdują się na branchu files organising.
