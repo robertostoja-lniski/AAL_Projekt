@@ -24,11 +24,6 @@ private:
 
     void makeUnique(std::vector< std::string > &vec);
 
-    size_t projectsNum = 0;
-    size_t workersNum = 0;
-    size_t sectorsNum = 0;
-    size_t limit = 0;
-
     std::vector< std::string > projects;
     std::vector< std::string > sectors;
     std::vector< Worker > workers;
@@ -37,22 +32,38 @@ public:
 
     DataStorage() {}
 
+    void addProject(std::string project){
+        projects.push_back(project);
+    }
+
+    void addSector(std::string sector){
+        sectors.push_back(sector);
+    }
+
+    void addWorker(Worker worker){
+        workers.push_back(worker);
+    }
+
     size_t getProjectsNum(){
-        return projectsNum;
+        return projects.size();
     }
 
     size_t getWorkersNum() {
-        return workersNum;
+        return workers.size();
     }
 
     size_t getSectorsNum() {
-        return sectorsNum;
+        return sectors.size();
     }
 
     size_t getLimit() {
-        return limit;
+        return projects.size() / 2;
     }
     
+    bool isEmpty() {
+        return (projects.size() + sectors.size() + workers.size()) == 0;
+    }
+
     int getSectorId(std::string sector) {
 
         auto it = std::find(sectors.begin(), sectors.end(), sector);
@@ -65,7 +76,7 @@ public:
 
     std::string getSectorAt(size_t index) {
 
-        if(index > sectorsNum) {
+        if(index > sectors.size()) {
             throw std::out_of_range("There is no such sector");
         }
         return sectors[index];
@@ -83,7 +94,7 @@ public:
 
     Worker getWorkerAt(size_t index) {
 
-        if(index > workersNum) {
+        if(index > workers.size()) {
             throw std::out_of_range("There is no such worker");
         }
         return workers[index];
@@ -91,7 +102,7 @@ public:
 
     std::string getProjectAt(size_t index) {
         
-        if(index > projectsNum) {
+        if(index > projects.size()) {
             throw std::out_of_range("There is no such project");
         }
         return projects[index];

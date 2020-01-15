@@ -17,6 +17,10 @@ size_t Graph::getLimit() {
 }
 
 void Graph::generateGraph(DataStorage dataStorage) {
+
+    if(dataStorage.isEmpty()){
+        return;
+    }
     // 2 is added because graph has to have starting and ending vertexes
     graphSize = dataStorage.getWorkersNum() +  dataStorage.getSectorsNum() + dataStorage.getProjectsNum() + 2;
     // [begin][sectors][workers][projects][end]
@@ -66,7 +70,6 @@ void Graph::generateGraph(DataStorage dataStorage) {
         makeOneDirectionalConnectionBetween( projectOffset, graphSize - 1);
         projectId++;
     }
-
 }
 
 void Graph::print() {

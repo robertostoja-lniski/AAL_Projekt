@@ -16,10 +16,10 @@
 #include <cmath>
 #include <set>
 
-#define TEST_NUM 250
+#define TEST_NUM 1000
 #define WORKER_NUM 14
 #define PROJECT_NUM 10
-#define SECTOR_NUM 6 
+#define SECTOR_NUM 8 
 #define VERBOSE 0
 
 #define RAPORT_FILE "../visualisation/raport.csv"
