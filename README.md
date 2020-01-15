@@ -32,7 +32,8 @@ testing - programy do testowania, testy jednostkowe oraz dane testowe
 Program jest rozwiązany przy użyciu algorytmu forda fulkersona obługującego grafy
 skierowane oraz nieskierowane. Przeszukiwanie grafu jest liniowe w oparciu o 
 algorytm BFS, złożoność problemu to 0(n^3). Dodatkowo w celu ułatwienia przetwarzania
-danych znajdują się klasy pomocnicze.
+danych znajdują się klasy pomocnicze. Do wizualizacji danych wykorzystano Jupyter-Notebook i język Python,
+a do implementacji programu język C++.
 
 
 Na branchu Master jest rozwiązanie problemu algorytmicznego, dodatki ( generatory testów, narzędzia do wizualizacji )
