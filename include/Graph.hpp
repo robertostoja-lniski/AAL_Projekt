@@ -42,7 +42,13 @@ private:
 public:
     
     Graph() {}
-
+    ~Graph() {
+        
+        for(int i = graphSize -1 ; i >= 0; i--) {
+            graphRepresentation[i].clear();
+        }
+        delete graphRepresentation;
+    }
     /*
         Function generating graph:
 

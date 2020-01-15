@@ -1,4 +1,4 @@
-#include "Graph.hpp"
+#include "../include/Graph.hpp"
 void Graph::makeOneDirectionalConnectionBetween(int a, int b){
 
         graphRepresentation[a].push_back(b); 
