@@ -39,30 +39,19 @@ int DataStorage::readData(std::string filename){
     makeUnique(sectors);
     makeUnique(projects);
 
-    workersNum = workers.size();
-    projectsNum = projects.size();
-    sectorsNum = sectors.size();
-    limit = projectsNum / 2;
-
     return 0;
 }
 
 void DataStorage::printData() {
 
+    std::cout << "Pracownicy:" << std::endl;
     for( auto worker : workers ) {
-        std::cout << worker.getName() << " ";
+        std::cout << worker.getName() << " ma projekty ";
 
         for( auto project : worker.getProjects() ) {
             std::cout << project << " ";
         }
         std::cout << "\n";
-    }
-
-    std::cout << "\n";
-
-    for( auto project : projects ) {
-
-        std::cout << project << "\n";
     }
     
     std::cout << "\n";

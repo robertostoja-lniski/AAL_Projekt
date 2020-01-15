@@ -67,6 +67,10 @@ int Solver::fordFulkerson(std::vector< int >* graphRepresentation, size_t graphS
     std::vector< Connection >* residualGraph;  
     residualGraph = new std::vector< Connection >[graphSize];
 
+    if(graphSize == 0 || limit == 0) {
+        return 0;
+    }
+
     for (u = 0; u < graphSize; u++) {
 
         for (v = 0; v < graphRepresentation[u].size(); v++) {

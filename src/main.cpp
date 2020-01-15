@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    std::string filename = argv[1];
+    std::string filename = std::string(argv[1]);
     DataStorage dataStorage;
 
     dataStorage.readData(filename);
